@@ -1,5 +1,6 @@
 package com.sgallalucas.gym.model;
 
+import com.sgallalucas.gym.model.enums.Type;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,9 @@ public class Workout {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    private String type;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
     private String description;
 
     @ManyToOne
@@ -25,7 +28,7 @@ public class Workout {
 
     public Workout() {}
 
-    public Workout(UUID id, String name, String type, String description) {
+    public Workout(UUID id, String name, Type type, String description) {
         this.id = id;
         this.name = name;
         this.type = type;

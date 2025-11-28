@@ -21,6 +21,8 @@ public class Student {
     private String name;
     private String email;
     private LocalDate birthDate;
+
+    @Enumerated(EnumType.STRING)
     private Genre genre;
 
     @ManyToOne

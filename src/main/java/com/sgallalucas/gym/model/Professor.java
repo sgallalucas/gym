@@ -22,7 +22,11 @@ public class Professor {
     private String name;
     private String email;
     private LocalDate birthDate;
+
+    @Enumerated(EnumType.STRING)
     private Genre genre;
+
+    @Enumerated(EnumType.STRING)
     private Specialty specialty;
 
     @OneToMany(mappedBy = "professor")
