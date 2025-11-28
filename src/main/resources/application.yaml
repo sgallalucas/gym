@@ -1,6 +1,8 @@
 spring:
   application:
     name: gym
+  profiles:
+    active: test
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
