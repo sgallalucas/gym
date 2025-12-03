@@ -1,7 +1,5 @@
 package com.sgallalucas.gym.services;
 
-import com.sgallalucas.gym.model.DTOs.StudentRequestDTO;
-import com.sgallalucas.gym.model.DTOs.StudentResponseDTO;
 import com.sgallalucas.gym.model.Student;
 import com.sgallalucas.gym.repositories.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,26 +34,5 @@ public class StudentService {
     public void delete(Student student) {
         Student found = getStudent(student.getId());
         studentRepository.delete(found);
-    }
-
-    public Student toEntity(StudentRequestDTO requestDTO) {
-        Student student = new Student();
-        student.setId(requestDTO.id());
-        student.setName(requestDTO.name());
-        student.setEmail(requestDTO.email());
-        student.setBirthDate(requestDTO.birthDate());
-        student.setGenre(requestDTO.genre());
-        return student;
-    }
-
-    public StudentResponseDTO toDTO(Student student) {
-        return new StudentResponseDTO(
-                student.getId(),
-                student.getName(),
-                student.getEmail(),
-                student.getBirthDate(),
-                student.getGenre(),
-                student.getWorkouts()
-        );
     }
 }

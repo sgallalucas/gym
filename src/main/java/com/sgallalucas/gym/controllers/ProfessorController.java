@@ -4,6 +4,7 @@ import com.sgallalucas.gym.model.DTOs.ProfessorRequestDTO;
 import com.sgallalucas.gym.model.DTOs.ProfessorResponseDTO;
 import com.sgallalucas.gym.model.Professor;
 import com.sgallalucas.gym.services.ProfessorService;
+import com.sgallalucas.gym.util.converters.ProfessorConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,11 @@ import java.util.UUID;
 public class ProfessorController {
 
     private final ProfessorService professorService;
+    private final ProfessorConverter professorConverter;
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid ProfessorRequestDTO requestDTO) {
-        Professor professor = professorService.toEntity(requestDTO);
+        Professor professor = professorConverter.toEntity(requestDTO);
         professorService.create(professor);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + professor.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
@@ -30,13 +32,13 @@ public class ProfessorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProfessorResponseDTO> getProfessor(@PathVariable String id) {
-        ProfessorResponseDTO responseDTO = professorService.toDTO(professorService.getProfessor(UUID.fromString(id)));
+        ProfessorResponseDTO responseDTO = professorConverter.toDTO(professorService.getProfessor(UUID.fromString(id)));
         return ResponseEntity.ok().body(responseDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid ProfessorRequestDTO requestDTO) {
-        professorService.update(UUID.fromString(id), professorService.toEntity(requestDTO));
+        professorService.update(UUID.fromString(id), professorConverter.toEntity(requestDTO));
         return ResponseEntity.noContent().build();
     }
 

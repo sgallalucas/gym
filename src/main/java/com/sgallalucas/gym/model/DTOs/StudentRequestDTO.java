@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record StudentRequestDTO(
-
         UUID id,
 
         @NotBlank(message = "required field")
@@ -27,5 +26,9 @@ public record StudentRequestDTO(
         LocalDate birthDate,
 
         @NotNull(message = "required field")
-        Genre genre) {
+        Genre genre,
+
+        @NotNull(message = "required field")
+        String professorId
+) {
 }
