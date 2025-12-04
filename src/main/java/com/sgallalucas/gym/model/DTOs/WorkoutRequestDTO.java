@@ -1,8 +1,7 @@
 package com.sgallalucas.gym.model.DTOs;
 
-import com.sgallalucas.gym.model.enums.Type;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
@@ -15,8 +14,9 @@ public record WorkoutRequestDTO(
         @NotBlank(message = "required field")
         String description,
 
-        @NotNull(message = "required field")
-        Type type,
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        @NotBlank(message = "required field")
+        String type,
 
         @NotBlank(message = "required field")
         String professorId,

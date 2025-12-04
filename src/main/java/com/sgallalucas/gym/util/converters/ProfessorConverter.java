@@ -3,6 +3,8 @@ package com.sgallalucas.gym.util.converters;
 import com.sgallalucas.gym.model.DTOs.ProfessorRequestDTO;
 import com.sgallalucas.gym.model.DTOs.ProfessorResponseDTO;
 import com.sgallalucas.gym.model.Professor;
+import com.sgallalucas.gym.model.enums.Genre;
+import com.sgallalucas.gym.model.enums.Specialty;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,8 +16,8 @@ public class ProfessorConverter {
         professor.setName(requestDTO.name());
         professor.setEmail(requestDTO.email());
         professor.setBirthDate(requestDTO.birthDate());
-        professor.setGenre(requestDTO.genre());
-        professor.setSpecialty(requestDTO.specialty());
+        professor.setGenre(Genre.valueOf(requestDTO.genre().toUpperCase()));
+        professor.setSpecialty(Specialty.valueOf(requestDTO.specialty().toUpperCase()));
         return professor;
     }
 

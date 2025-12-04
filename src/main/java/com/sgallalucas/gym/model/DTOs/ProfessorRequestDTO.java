@@ -1,8 +1,6 @@
 package com.sgallalucas.gym.model.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sgallalucas.gym.model.enums.Genre;
-import com.sgallalucas.gym.model.enums.Specialty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,10 +24,12 @@ public record ProfessorRequestDTO(
         @JsonFormat(pattern = "dd/MM/yyyy")
         LocalDate birthDate,
 
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
         @NotNull(message = "required field")
-        Genre genre,
+        String genre,
 
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
         @NotNull(message = "required field")
-        Specialty specialty
+        String specialty
 ) {
 }

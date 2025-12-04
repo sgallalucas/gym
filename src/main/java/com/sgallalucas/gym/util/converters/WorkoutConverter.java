@@ -3,6 +3,7 @@ package com.sgallalucas.gym.util.converters;
 import com.sgallalucas.gym.model.DTOs.WorkoutRequestDTO;
 import com.sgallalucas.gym.model.DTOs.WorkoutResponseDTO;
 import com.sgallalucas.gym.model.Workout;
+import com.sgallalucas.gym.model.enums.Type;
 import com.sgallalucas.gym.services.ProfessorService;
 import com.sgallalucas.gym.services.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class WorkoutConverter {
         workout.setId(requestDTO.id());
         workout.setName(requestDTO.name());
         workout.setDescription(requestDTO.description());
-        workout.setType(requestDTO.type());
+        workout.setType(Type.valueOf(requestDTO.type().toUpperCase()));
         workout.setProfessor(professorService.getProfessor(UUID.fromString(requestDTO.professorId())));
         workout.setStudent(studentService.getStudent(UUID.fromString(requestDTO.studentId())));
         return workout;

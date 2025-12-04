@@ -3,6 +3,7 @@ package com.sgallalucas.gym.util.converters;
 import com.sgallalucas.gym.model.DTOs.StudentRequestDTO;
 import com.sgallalucas.gym.model.DTOs.StudentResponseDTO;
 import com.sgallalucas.gym.model.Student;
+import com.sgallalucas.gym.model.enums.Genre;
 import com.sgallalucas.gym.services.ProfessorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public class StudentConverter {
         student.setName(requestDTO.name());
         student.setEmail(requestDTO.email());
         student.setBirthDate(requestDTO.birthDate());
-        student.setGenre(requestDTO.genre());
+        student.setGenre(Genre.valueOf(requestDTO.genre().toUpperCase()));
         student.setProfessor(professorService.getProfessor(UUID.fromString(requestDTO.professorId())));
         return student;
     }

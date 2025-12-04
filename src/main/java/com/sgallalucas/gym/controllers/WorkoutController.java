@@ -5,6 +5,7 @@ import com.sgallalucas.gym.model.DTOs.WorkoutResponseDTO;
 import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.services.WorkoutService;
 import com.sgallalucas.gym.util.converters.WorkoutConverter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class WorkoutController {
     private final WorkoutConverter workoutConverter;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody WorkoutRequestDTO requestDTO) {
+    public ResponseEntity<Void> create(@RequestBody @Valid WorkoutRequestDTO requestDTO) {
         Workout workout = workoutConverter.toEntity(requestDTO);
         workoutService.create(workout);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + workout.getId()).buildAndExpand().toUri();
@@ -36,7 +37,7 @@ public class WorkoutController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody WorkoutRequestDTO requestDTO) {
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid WorkoutRequestDTO requestDTO) {
         workoutService.update(UUID.fromString(id), workoutConverter.toEntity(requestDTO));
         return ResponseEntity.noContent().build();
     }
