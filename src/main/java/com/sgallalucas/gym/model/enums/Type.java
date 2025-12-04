@@ -9,5 +9,4 @@ public enum Type {
     CARDIO,
     FLEXIBILITY,
     MOBILITY,
-
 }
