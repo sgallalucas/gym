@@ -2,6 +2,7 @@ package com.sgallalucas.gym.services;
 
 import com.sgallalucas.gym.model.Professor;
 import com.sgallalucas.gym.repositories.ProfessorRepository;
+import com.sgallalucas.gym.validators.ProfessorValidator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,10 @@ import java.util.UUID;
 public class ProfessorService {
 
     private final ProfessorRepository professorRepository;
+    private final ProfessorValidator validator;
 
     public void create(Professor professor) {
+        validator.validation(professor.getEmail());
         professorRepository.save(professor);
     }
 
@@ -23,6 +26,7 @@ public class ProfessorService {
     }
 
     public void update(UUID id, Professor professor) {
+        validator.validation(professor.getEmail());
         Professor found = getProfessor(id);
         found.setName(professor.getName());
         found.setEmail(professor.getEmail());

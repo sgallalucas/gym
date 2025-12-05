@@ -4,7 +4,7 @@ import com.sgallalucas.gym.model.DTOs.WorkoutRequestDTO;
 import com.sgallalucas.gym.model.DTOs.WorkoutResponseDTO;
 import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.services.WorkoutService;
-import com.sgallalucas.gym.util.converters.WorkoutConverter;
+import com.sgallalucas.gym.utils.converters.WorkoutConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

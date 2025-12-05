@@ -25,11 +25,11 @@ public record ProfessorRequestDTO(
         LocalDate birthDate,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING)
-        @NotNull(message = "required field")
+        @NotBlank(message = "required field")
         String genre,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING)
-        @NotNull(message = "required field")
+        @NotBlank(message = "required field")
         String specialty
 ) {
 }

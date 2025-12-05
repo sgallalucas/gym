@@ -12,7 +12,7 @@ public class ProfessorValidator {
 
     private final ProfessorRepository professorRepository;
 
-    public void validator(String email) {
+    public void validation(String email) {
         if (check(email)) {
             throw new DuplicateRecordException("This email already exists");
         }

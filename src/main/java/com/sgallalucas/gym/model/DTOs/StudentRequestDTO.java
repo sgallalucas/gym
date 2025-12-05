@@ -25,7 +25,7 @@ public record StudentRequestDTO(
         LocalDate birthDate,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING)
-        @NotNull(message = "required field")
+        @NotBlank(message = "required field")
         String genre,
 
         @NotBlank(message = "required field")

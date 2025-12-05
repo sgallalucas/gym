@@ -4,7 +4,7 @@ import com.sgallalucas.gym.model.DTOs.StudentRequestDTO;
 import com.sgallalucas.gym.model.DTOs.StudentResponseDTO;
 import com.sgallalucas.gym.model.Student;
 import com.sgallalucas.gym.services.StudentService;
-import com.sgallalucas.gym.util.converters.StudentConverter;
+import com.sgallalucas.gym.utils.converters.StudentConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

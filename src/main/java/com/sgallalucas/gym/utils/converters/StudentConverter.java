@@ -1,4 +1,4 @@
-package com.sgallalucas.gym.util.converters;
+package com.sgallalucas.gym.utils.converters;
 
 import com.sgallalucas.gym.model.DTOs.StudentRequestDTO;
 import com.sgallalucas.gym.model.DTOs.StudentResponseDTO;

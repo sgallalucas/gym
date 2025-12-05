@@ -4,7 +4,7 @@ import com.sgallalucas.gym.model.DTOs.ProfessorRequestDTO;
 import com.sgallalucas.gym.model.DTOs.ProfessorResponseDTO;
 import com.sgallalucas.gym.model.Professor;
 import com.sgallalucas.gym.services.ProfessorService;
-import com.sgallalucas.gym.util.converters.ProfessorConverter;
+import com.sgallalucas.gym.utils.converters.ProfessorConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
