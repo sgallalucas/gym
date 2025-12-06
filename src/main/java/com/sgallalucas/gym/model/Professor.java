@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -30,6 +31,12 @@ public class Professor {
 
     @Enumerated(EnumType.STRING)
     private Specialty specialty;
+
+    @OneToMany(mappedBy = "professor")
+    private List<Student> students;
+
+    @OneToMany(mappedBy = "professor")
+    private List<Workout> workouts;
 
     public Professor() {}
 

@@ -34,7 +34,7 @@ public class StudentConverter {
                 student.getEmail(),
                 student.getBirthDate(),
                 student.getGenre(),
-                student.getProfessor()
+                student.getWorkouts()
         );
     }
 }

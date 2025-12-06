@@ -1,5 +1,6 @@
 package com.sgallalucas.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sgallalucas.gym.model.enums.Type;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,10 +27,12 @@ public class Workout {
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
+    @JsonIgnore
     private Professor professor;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @JsonIgnore
     private Student student;
 
     public Workout() {}

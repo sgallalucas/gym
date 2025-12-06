@@ -28,7 +28,8 @@ public class ProfessorConverter {
                 professor.getEmail(),
                 professor.getBirthDate(),
                 professor.getGenre(),
-                professor.getSpecialty()
+                professor.getSpecialty(),
+                professor.getStudents()
         );
     }
 }

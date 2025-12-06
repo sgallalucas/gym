@@ -34,8 +34,7 @@ public class WorkoutConverter {
                 workout.getId(),
                 workout.getName(),
                 workout.getDescription(),
-                workout.getType(),
-                workout.getStudent()
+                workout.getType()
         );
     }
 }
