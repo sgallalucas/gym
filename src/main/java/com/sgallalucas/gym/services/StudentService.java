@@ -1,12 +1,15 @@
 package com.sgallalucas.gym.services;
 
+import com.sgallalucas.gym.exceptions.NotAllowedOperationException;
 import com.sgallalucas.gym.model.Student;
+import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.repositories.StudentRepository;
 import com.sgallalucas.gym.validators.StudentValidator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,6 +40,14 @@ public class StudentService {
 
     public void delete(Student student) {
         Student found = getStudent(student.getId());
+        if (hasWorkout(found)) {
+            throw new NotAllowedOperationException("It's not allowed delete a student that has workouts");
+        }
         studentRepository.delete(found);
+    }
+
+    public boolean hasWorkout(Student student) {
+        List<Workout> list = student.getWorkouts();
+        return (list.isEmpty()) ? false : true;
     }
 }

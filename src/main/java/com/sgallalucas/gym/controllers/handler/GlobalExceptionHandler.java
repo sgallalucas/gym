@@ -1,6 +1,7 @@
 package com.sgallalucas.gym.controllers.handler;
 
 import com.sgallalucas.gym.exceptions.DuplicateRecordException;
+import com.sgallalucas.gym.exceptions.NotAllowedOperationException;
 import com.sgallalucas.gym.model.DTOs.errors.ErrorResponseDetails;
 import com.sgallalucas.gym.model.DTOs.errors.FieldErrorDetails;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,6 +32,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponseDetails handleDuplicateRecordException(DuplicateRecordException ex) {
         return new ErrorResponseDetails(HttpStatus.CONFLICT.value(), ex.getMessage(), Instant.now(), List.of());
+    }
+
+    @ExceptionHandler(NotAllowedOperationException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ErrorResponseDetails handleNotAllowedOperationException(NotAllowedOperationException ex) {
+        return new ErrorResponseDetails(HttpStatus.OK.value(), ex.getMessage(), Instant.now(), List.of());
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
