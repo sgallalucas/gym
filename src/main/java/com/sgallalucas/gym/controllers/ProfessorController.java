@@ -7,6 +7,9 @@ import com.sgallalucas.gym.services.ProfessorService;
 import com.sgallalucas.gym.utils.converters.ProfessorConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,5 +49,13 @@ public class ProfessorController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         professorService.delete(professorService.getProfessor(UUID.fromString(id)));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ProfessorResponseDTO>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                              @RequestParam(name = "size", defaultValue = "5") Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProfessorResponseDTO> responseDTO = professorService.findAll(pageable).map(professorConverter::toDTO);
+        return ResponseEntity.ok().body(responseDTO);
     }
 }

@@ -8,6 +8,8 @@ import com.sgallalucas.gym.repositories.ProfessorRepository;
 import com.sgallalucas.gym.validators.ProfessorValidator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +48,10 @@ public class ProfessorService {
             throw new NotAllowedOperationException("It's not allowed delete a professor that has students or workouts");
         }
         professorRepository.delete(found);
+    }
+
+    public Page<Professor> findAll(Pageable pageable) {
+        return professorRepository.findAll(pageable);
     }
 
     public boolean hasStudentOrWorkout(Professor professor) {
