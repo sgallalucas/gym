@@ -7,6 +7,9 @@ import com.sgallalucas.gym.services.StudentService;
 import com.sgallalucas.gym.utils.converters.StudentConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -47,5 +50,13 @@ public class StudentController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         studentService.delete(studentService.getStudent(UUID.fromString(id)));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<StudentResponseDTO>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                            @RequestParam(name = "size", defaultValue = "5") Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<StudentResponseDTO> responseDTO = studentService.findAll(pageable).map(studentConverter::toDTO);
+        return ResponseEntity.ok().body(responseDTO);
     }
 }

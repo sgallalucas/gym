@@ -7,6 +7,8 @@ import com.sgallalucas.gym.repositories.StudentRepository;
 import com.sgallalucas.gym.validators.StudentValidator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +46,10 @@ public class StudentService {
             throw new NotAllowedOperationException("It's not allowed delete a student that has workouts");
         }
         studentRepository.delete(found);
+    }
+
+    public Page<Student> findAll(Pageable pageable) {
+        return studentRepository.findAll(pageable);
     }
 
     public boolean hasWorkout(Student student) {
