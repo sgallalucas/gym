@@ -3,8 +3,8 @@ package com.sgallalucas.gym.controllers;
 import com.sgallalucas.gym.model.DTOs.StudentRequestDTO;
 import com.sgallalucas.gym.model.DTOs.StudentResponseDTO;
 import com.sgallalucas.gym.model.Student;
+import com.sgallalucas.gym.model.mappers.StudentMapper;
 import com.sgallalucas.gym.services.StudentService;
-import com.sgallalucas.gym.utils.converters.StudentConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,11 +23,11 @@ import java.util.UUID;
 public class StudentController {
 
     private final StudentService studentService;
-    private final StudentConverter studentConverter;
+    private final StudentMapper studentMapper;
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid StudentRequestDTO requestDTO) {
-        Student student = studentConverter.toEntity(requestDTO);
+        Student student = studentMapper.toEntity(requestDTO);
         studentService.create(student);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + student.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
@@ -36,13 +36,13 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponseDTO> getStudent(@PathVariable String id) {
         Student student = studentService.getStudent(UUID.fromString(id));
-        StudentResponseDTO responseDTO = studentConverter.toDTO(student);
+        StudentResponseDTO responseDTO = studentMapper.toDTO(student);
         return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid StudentRequestDTO requestDTO) {
-        studentService.update(UUID.fromString(id), studentConverter.toEntity(requestDTO));
+        studentService.update(UUID.fromString(id), studentMapper.toEntity(requestDTO));
         return ResponseEntity.noContent().build();
     }
 
@@ -56,7 +56,7 @@ public class StudentController {
     public ResponseEntity<Page<StudentResponseDTO>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "size", defaultValue = "5") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<StudentResponseDTO> responseDTO = studentService.findAll(pageable).map(studentConverter::toDTO);
+        Page<StudentResponseDTO> responseDTO = studentService.findAll(pageable).map(studentMapper::toDTO);
         return ResponseEntity.ok().body(responseDTO);
     }
 }

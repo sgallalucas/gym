@@ -3,8 +3,8 @@ package com.sgallalucas.gym.controllers;
 import com.sgallalucas.gym.model.DTOs.ProfessorRequestDTO;
 import com.sgallalucas.gym.model.DTOs.ProfessorResponseDTO;
 import com.sgallalucas.gym.model.Professor;
+import com.sgallalucas.gym.model.mappers.ProfessorMapper;
 import com.sgallalucas.gym.services.ProfessorService;
-import com.sgallalucas.gym.utils.converters.ProfessorConverter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,11 +23,11 @@ import java.util.UUID;
 public class ProfessorController {
 
     private final ProfessorService professorService;
-    private final ProfessorConverter professorConverter;
+    private final ProfessorMapper professorMapper;
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid ProfessorRequestDTO requestDTO) {
-        Professor professor = professorConverter.toEntity(requestDTO);
+        Professor professor = professorMapper.toEntity(requestDTO);
         professorService.create(professor);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + professor.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
@@ -35,13 +35,13 @@ public class ProfessorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProfessorResponseDTO> getProfessor(@PathVariable String id) {
-        ProfessorResponseDTO responseDTO = professorConverter.toDTO(professorService.getProfessor(UUID.fromString(id)));
+        ProfessorResponseDTO responseDTO = professorMapper.toDTO(professorService.getProfessor(UUID.fromString(id)));
         return ResponseEntity.ok().body(responseDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid ProfessorRequestDTO requestDTO) {
-        professorService.update(UUID.fromString(id), professorConverter.toEntity(requestDTO));
+        professorService.update(UUID.fromString(id), professorMapper.toEntity(requestDTO));
         return ResponseEntity.noContent().build();
     }
 
@@ -55,7 +55,7 @@ public class ProfessorController {
     public ResponseEntity<Page<ProfessorResponseDTO>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "size", defaultValue = "5") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProfessorResponseDTO> responseDTO = professorService.findAll(pageable).map(professorConverter::toDTO);
+        Page<ProfessorResponseDTO> responseDTO = professorService.findAll(pageable).map(professorMapper::toDTO);
         return ResponseEntity.ok().body(responseDTO);
     }
 }
