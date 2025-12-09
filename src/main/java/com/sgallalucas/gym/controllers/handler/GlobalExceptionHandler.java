@@ -2,8 +2,8 @@ package com.sgallalucas.gym.controllers.handler;
 
 import com.sgallalucas.gym.exceptions.DuplicateRecordException;
 import com.sgallalucas.gym.exceptions.NotAllowedOperationException;
-import com.sgallalucas.gym.model.DTOs.errors.ErrorResponseDetails;
-import com.sgallalucas.gym.model.DTOs.errors.FieldErrorDetails;
+import com.sgallalucas.gym.controllers.DTOs.errors.ErrorResponseDetails;
+import com.sgallalucas.gym.controllers.DTOs.errors.FieldErrorDetails;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

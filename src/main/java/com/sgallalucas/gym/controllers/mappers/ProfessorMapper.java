@@ -1,7 +1,7 @@
-package com.sgallalucas.gym.model.mappers;
+package com.sgallalucas.gym.controllers.mappers;
 
-import com.sgallalucas.gym.model.DTOs.ProfessorRequestDTO;
-import com.sgallalucas.gym.model.DTOs.ProfessorResponseDTO;
+import com.sgallalucas.gym.controllers.DTOs.ProfessorRequestDTO;
+import com.sgallalucas.gym.controllers.DTOs.ProfessorResponseDTO;
 import com.sgallalucas.gym.model.Professor;
 import org.mapstruct.Mapper;
 

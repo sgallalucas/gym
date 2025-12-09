@@ -1,4 +1,4 @@
-package com.sgallalucas.gym.model.DTOs.errors;
+package com.sgallalucas.gym.controllers.DTOs.errors;
 
 import java.time.Instant;
 import java.util.List;

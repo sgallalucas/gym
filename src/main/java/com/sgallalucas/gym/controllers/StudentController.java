@@ -1,9 +1,9 @@
 package com.sgallalucas.gym.controllers;
 
-import com.sgallalucas.gym.model.DTOs.StudentRequestDTO;
-import com.sgallalucas.gym.model.DTOs.StudentResponseDTO;
+import com.sgallalucas.gym.controllers.DTOs.StudentRequestDTO;
+import com.sgallalucas.gym.controllers.DTOs.StudentResponseDTO;
 import com.sgallalucas.gym.model.Student;
-import com.sgallalucas.gym.model.mappers.StudentMapper;
+import com.sgallalucas.gym.controllers.mappers.StudentMapper;
 import com.sgallalucas.gym.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

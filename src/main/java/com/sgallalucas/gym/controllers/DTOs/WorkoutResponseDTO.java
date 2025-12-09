@@ -1,4 +1,4 @@
-package com.sgallalucas.gym.model.DTOs;
+package com.sgallalucas.gym.controllers.DTOs;
 
 import com.sgallalucas.gym.model.enums.Type;
 

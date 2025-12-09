@@ -1,7 +1,7 @@
-package com.sgallalucas.gym.model.mappers;
+package com.sgallalucas.gym.controllers.mappers;
 
-import com.sgallalucas.gym.model.DTOs.WorkoutRequestDTO;
-import com.sgallalucas.gym.model.DTOs.WorkoutResponseDTO;
+import com.sgallalucas.gym.controllers.DTOs.WorkoutRequestDTO;
+import com.sgallalucas.gym.controllers.DTOs.WorkoutResponseDTO;
 import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.repositories.ProfessorRepository;
 import com.sgallalucas.gym.repositories.StudentRepository;

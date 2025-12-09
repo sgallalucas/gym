@@ -1,4 +1,4 @@
-package com.sgallalucas.gym.model.DTOs;
+package com.sgallalucas.gym.controllers.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
