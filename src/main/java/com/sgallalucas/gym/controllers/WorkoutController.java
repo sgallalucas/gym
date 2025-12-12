@@ -2,8 +2,8 @@ package com.sgallalucas.gym.controllers;
 
 import com.sgallalucas.gym.controllers.DTOs.WorkoutRequestDTO;
 import com.sgallalucas.gym.controllers.DTOs.WorkoutResponseDTO;
-import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.controllers.mappers.WorkoutMapper;
+import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.services.WorkoutService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
