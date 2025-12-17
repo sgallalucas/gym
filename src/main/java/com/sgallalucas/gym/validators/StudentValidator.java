@@ -14,7 +14,7 @@ public class StudentValidator {
 
     public void validation(String email) {
         if (check(email)) {
-            throw new DuplicateRecordException("This email already exists");
+            throw new DuplicateRecordException(String.format("student with %s email already exists", email));
         }
     }
 
