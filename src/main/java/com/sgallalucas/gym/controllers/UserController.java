@@ -1,5 +1,6 @@
 package com.sgallalucas.gym.controllers;
 
+import com.sgallalucas.gym.controllers.DTOs.UserLoginDTO;
 import com.sgallalucas.gym.controllers.DTOs.UserRegisterDTO;
 import com.sgallalucas.gym.controllers.mappers.UserMapper;
 import com.sgallalucas.gym.model.User;
@@ -7,6 +8,9 @@ import com.sgallalucas.gym.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid UserRegisterDTO registerDTO) {
@@ -29,5 +34,12 @@ public class UserController {
         userService.save(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + user.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@RequestBody @Valid UserLoginDTO loginDTO) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
+        Authentication authentication = authenticationManager.authenticate(usernamePassword);
+        return  ResponseEntity.ok().build();
     }
 }
