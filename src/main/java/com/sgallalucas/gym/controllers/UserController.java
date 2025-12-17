@@ -38,6 +38,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody @Valid UserLoginDTO loginDTO) {
+        userService.loginVerification(userMapper.loginDTOtoEntity(loginDTO));
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
         return  ResponseEntity.ok().build();
