@@ -1,6 +1,6 @@
 package com.sgallalucas.gym.model;
 
-import com.sgallalucas.gym.model.enums.Role;
+import com.sgallalucas.gym.model.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,5 +26,5 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Roles roles;
 }
