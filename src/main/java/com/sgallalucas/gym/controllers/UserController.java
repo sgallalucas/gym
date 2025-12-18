@@ -4,6 +4,8 @@ import com.sgallalucas.gym.controllers.DTOs.UserLoginDTO;
 import com.sgallalucas.gym.controllers.DTOs.UserRegisterDTO;
 import com.sgallalucas.gym.controllers.mappers.UserMapper;
 import com.sgallalucas.gym.model.User;
+import com.sgallalucas.gym.security.JwtTokenService;
+import com.sgallalucas.gym.security.UserDetailsImpl;
 import com.sgallalucas.gym.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenService  jwtTokenService;
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid UserRegisterDTO registerDTO) {
@@ -37,10 +40,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody @Valid UserLoginDTO loginDTO) {
+    public ResponseEntity<String> login(@RequestBody @Valid UserLoginDTO loginDTO) {
         userService.loginVerification(userMapper.loginDTOtoEntity(loginDTO));
-        var usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
+        UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
-        return  ResponseEntity.ok().build();
+        String token = jwtTokenService.generateToken((UserDetailsImpl) authentication);
+        return  ResponseEntity.ok().body(token);
     }
 }
