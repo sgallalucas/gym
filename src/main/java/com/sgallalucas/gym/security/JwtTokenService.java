@@ -13,7 +13,7 @@ import java.util.Date;
 @Service
 public class JwtTokenService {
 
-    @Value("{api.security.token.secret}")
+    @Value(value = "api.security.token.secret")
     private String secret;
 
     public String generateToken(UserDetailsImpl user) {

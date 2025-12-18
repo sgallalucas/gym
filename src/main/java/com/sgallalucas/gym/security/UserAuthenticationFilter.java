@@ -34,9 +34,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        else  {
-            throw new RuntimeException("Token is null");
-        }
+
         filterChain.doFilter(request, response);
     }
 

@@ -10,6 +10,7 @@ import com.sgallalucas.gym.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,7 @@ public class UserController {
     private final JwtTokenService  jwtTokenService;
 
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> register(@RequestBody @Valid UserRegisterDTO registerDTO) {
         User user = userMapper.toEntity(registerDTO);
         userService.save(user);
@@ -44,7 +46,7 @@ public class UserController {
         userService.loginVerification(userMapper.loginDTOtoEntity(loginDTO));
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
-        String token = jwtTokenService.generateToken((UserDetailsImpl) authentication);
+        String token = jwtTokenService.generateToken((UserDetailsImpl) authentication.getPrincipal());
         return  ResponseEntity.ok().body(token);
     }
 }
