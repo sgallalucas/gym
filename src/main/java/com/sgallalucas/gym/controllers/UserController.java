@@ -47,6 +47,6 @@ public class UserController {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
         String token = jwtTokenService.generateToken((UserDetailsImpl) authentication.getPrincipal());
-        return  ResponseEntity.ok().body(token);
+        return  ResponseEntity.ok().body("token: " + token);
     }
 }

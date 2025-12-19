@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,6 +27,7 @@ public class ProfessorController {
     private final ProfessorMapper professorMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> create(@RequestBody @Valid ProfessorRequestDTO requestDTO) {
         Professor professor = professorMapper.toEntity(requestDTO);
         professorService.create(professor);
@@ -34,24 +36,28 @@ public class ProfessorController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProfessorResponseDTO> getProfessor(@PathVariable String id) {
         ProfessorResponseDTO responseDTO = professorMapper.toDTO(professorService.getProfessor(UUID.fromString(id)));
         return ResponseEntity.ok().body(responseDTO);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid ProfessorRequestDTO requestDTO) {
         professorService.update(UUID.fromString(id), professorMapper.toEntity(requestDTO));
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         professorService.delete(professorService.getProfessor(UUID.fromString(id)));
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<ProfessorResponseDTO>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "size", defaultValue = "5") Integer size) {
         Pageable pageable = PageRequest.of(page, size);

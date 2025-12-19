@@ -8,6 +8,7 @@ import com.sgallalucas.gym.services.WorkoutService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ public class WorkoutController {
     private final WorkoutMapper workoutMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('PROFESSOR')")
     public ResponseEntity<Void> create(@RequestBody @Valid WorkoutRequestDTO requestDTO) {
         Workout workout = workoutMapper.toEntity(requestDTO);
         workoutService.create(workout);
@@ -31,18 +33,21 @@ public class WorkoutController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('PROFESSOR', 'STUDENT')")
     public ResponseEntity<WorkoutResponseDTO> getWorkout(@PathVariable String id) {
         WorkoutResponseDTO responseDTO = workoutMapper.toDTO(workoutService.getWorkout(UUID.fromString(id)));
         return ResponseEntity.ok().body(responseDTO);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid WorkoutRequestDTO requestDTO) {
         workoutService.update(UUID.fromString(id), workoutMapper.toEntity(requestDTO));
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         workoutService.delete(workoutService.getWorkout(UUID.fromString(id)));
         return ResponseEntity.noContent().build();
