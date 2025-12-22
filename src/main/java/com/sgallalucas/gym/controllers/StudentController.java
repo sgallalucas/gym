@@ -93,7 +93,7 @@ public class StudentController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get", description = "Find all students")
+    @Operation(summary = "Get all", description = "Find all students")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns a list with all students or a empty list."),
             @ApiResponse(responseCode = "403", description = "Forbidden")
