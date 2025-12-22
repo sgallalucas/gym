@@ -1,7 +1,9 @@
 package com.sgallalucas.gym.controllers.DTOs;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(name = "User (Register)")
 public record UserRegisterDTO(
         @NotBlank(message = "required field")
         String login,
