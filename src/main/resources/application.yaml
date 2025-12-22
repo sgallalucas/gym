@@ -41,3 +41,5 @@ spring:
     security:
       token:
         secret: ${JWT_SECRET}
+springdoc:
+  override-with-generic-response: false #desabilita respostas genéricas
