@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @RequestMapping("/professors")
 @RequiredArgsConstructor
 @Tag(name = "Professors")
+@Slf4j
 public class ProfessorController {
 
     private final ProfessorService professorService;
@@ -41,8 +43,10 @@ public class ProfessorController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> create(@RequestBody @Valid ProfessorRequestDTO requestDTO) {
+        log.info("Create professor request received: {}", requestDTO);
         Professor professor = professorMapper.toEntity(requestDTO);
         professorService.create(professor);
+        log.info("Professor successfully created: id={}", professor.getId());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + professor.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
     }
@@ -57,6 +61,7 @@ public class ProfessorController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<ProfessorResponseDTO> getProfessor(@PathVariable String id) {
+        log.info("Get professor with id {} request received", id);
         ProfessorResponseDTO responseDTO = professorMapper.toDTO(professorService.getProfessor(UUID.fromString(id)));
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -72,7 +77,9 @@ public class ProfessorController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid ProfessorRequestDTO requestDTO) {
+        log.info("Update professor with id {} request received: {}", id, requestDTO);
         professorService.update(UUID.fromString(id), professorMapper.toEntity(requestDTO));
+        log.info("Professor successfully updated");
         return ResponseEntity.noContent().build();
     }
 
@@ -87,7 +94,9 @@ public class ProfessorController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> delete(@PathVariable String id) {
+        log.info("Delete professor with id request received: {}", id);
         professorService.delete(professorService.getProfessor(UUID.fromString(id)));
+        log.info("Professor successfully deleted");
         return ResponseEntity.noContent().build();
     }
 
@@ -100,6 +109,7 @@ public class ProfessorController {
     })
     public ResponseEntity<Page<ProfessorResponseDTO>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "size", defaultValue = "5") Integer size) {
+        log.info("Find all professors request received");
         Pageable pageable = PageRequest.of(page, size);
         Page<ProfessorResponseDTO> responseDTO = professorService.findAll(pageable).map(professorMapper::toDTO);
         return ResponseEntity.ok().body(responseDTO);

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,7 @@ import java.net.URI;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Tag(name = "Users")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -47,8 +49,10 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> register(@RequestBody @Valid UserRegisterDTO registerDTO) {
+        log.info("Registering user {}", registerDTO);
         User user = userMapper.toEntity(registerDTO);
         userService.save(user);
+        log.info("User {} successfully registered", user.getLogin());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + user.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
     }
@@ -61,10 +65,11 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "User not authorized."),
     })
     public ResponseEntity<String> login(@RequestBody @Valid UserLoginDTO loginDTO) {
+        log.info("User login: {}", loginDTO.login());
         userService.loginVerification(userMapper.loginDTOtoEntity(loginDTO));
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
         String token = jwtTokenService.generateToken((UserDetailsImpl) authentication.getPrincipal());
-        return  ResponseEntity.ok().body("token: " + token);
+        return  ResponseEntity.ok().body(token);
     }
 }

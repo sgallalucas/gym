@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @RequestMapping("/workouts")
 @RequiredArgsConstructor
 @Tag(name = "Workouts")
+@Slf4j
 public class WorkoutController {
 
     private final WorkoutService workoutService;
@@ -38,8 +40,10 @@ public class WorkoutController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> create(@RequestBody @Valid WorkoutRequestDTO requestDTO) {
+        log.info("Create workout request received: {}", requestDTO);
         Workout workout = workoutMapper.toEntity(requestDTO);
         workoutService.create(workout);
+        log.info("Workout created successfully: id={}", workout.getId());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + workout.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
     }
@@ -54,6 +58,7 @@ public class WorkoutController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<WorkoutResponseDTO> getWorkout(@PathVariable String id) {
+        log.info("Get workout with id {} request received", id);
         WorkoutResponseDTO responseDTO = workoutMapper.toDTO(workoutService.getWorkout(UUID.fromString(id)));
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -69,7 +74,9 @@ public class WorkoutController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid WorkoutRequestDTO requestDTO) {
+        log.info("Update workout with id {} request received: {}", id, requestDTO);
         workoutService.update(UUID.fromString(id), workoutMapper.toEntity(requestDTO));
+        log.info("Workout updated successfully");
         return ResponseEntity.noContent().build();
     }
 
@@ -83,7 +90,9 @@ public class WorkoutController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> delete(@PathVariable String id) {
+        log.info("Delete workout with id {} request received", id);
         workoutService.delete(workoutService.getWorkout(UUID.fromString(id)));
+        log.info("Workout deleted successfully");
         return ResponseEntity.noContent().build();
     }
 }

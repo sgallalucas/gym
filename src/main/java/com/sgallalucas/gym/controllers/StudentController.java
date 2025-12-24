@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @RequestMapping("/students")
 @RequiredArgsConstructor
 @Tag(name = "Students")
+@Slf4j
 public class StudentController {
 
     private final StudentService studentService;
@@ -40,8 +42,10 @@ public class StudentController {
             @ApiResponse(responseCode = "409", description = "Student already exists."),
     })
     public ResponseEntity<Void> create(@RequestBody @Valid StudentRequestDTO requestDTO) {
+        log.info("Create student request received: {}", requestDTO);
         Student student = studentMapper.toEntity(requestDTO);
         studentService.create(student);
+        log.info("Student successfully created: id={}", student.getId());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + student.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
     }
@@ -56,6 +60,7 @@ public class StudentController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<StudentResponseDTO> getStudent(@PathVariable String id) {
+        log.info("Get student with id {} request received", id);
         Student student = studentService.getStudent(UUID.fromString(id));
         StudentResponseDTO responseDTO = studentMapper.toDTO(student);
         return ResponseEntity.ok(responseDTO);
@@ -72,7 +77,9 @@ public class StudentController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid StudentRequestDTO requestDTO) {
+        log.info("Update student with id {} request received: {}", id, requestDTO);
         studentService.update(UUID.fromString(id), studentMapper.toEntity(requestDTO));
+        log.info("Student successfully updated");
         return ResponseEntity.noContent().build();
     }
 
@@ -87,7 +94,9 @@ public class StudentController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> delete(@PathVariable String id) {
+        log.info("Delete student with id {} request received", id);
         studentService.delete(studentService.getStudent(UUID.fromString(id)));
+        log.info("Student successfully deleted");
         return ResponseEntity.noContent().build();
     }
 
@@ -101,6 +110,7 @@ public class StudentController {
 
     public ResponseEntity<Page<StudentResponseDTO>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "size", defaultValue = "5") Integer size) {
+        log.info("Find all students request received");
         Pageable pageable = PageRequest.of(page, size);
         Page<StudentResponseDTO> responseDTO = studentService.findAll(pageable).map(studentMapper::toDTO);
         return ResponseEntity.ok().body(responseDTO);
