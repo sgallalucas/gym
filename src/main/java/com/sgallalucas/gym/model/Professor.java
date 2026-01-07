@@ -48,4 +48,14 @@ public class Professor {
         this.genre = genre;
         this.specialty = specialty;
     }
+
+    public Professor(UUID id, String name, String email, LocalDate birthDate, Genre genre, Specialty specialty,  List<Student> students) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.genre = genre;
+        this.specialty = specialty;
+        this.students = students;
+    }
 }

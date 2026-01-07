@@ -2,8 +2,6 @@ package com.sgallalucas.gym.services;
 
 import com.sgallalucas.gym.exceptions.NotAllowedOperationException;
 import com.sgallalucas.gym.model.Professor;
-import com.sgallalucas.gym.model.Student;
-import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.repositories.ProfessorRepository;
 import com.sgallalucas.gym.validators.ProfessorValidator;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,7 +30,7 @@ public class ProfessorService {
 
     public void update(UUID id, Professor professor) {
         validator.validation(professor.getEmail());
-        Professor found = getProfessor(id);
+        Professor found = professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found"));
         found.setName(professor.getName());
         found.setEmail(professor.getEmail());
         found.setBirthDate(professor.getBirthDate());
@@ -43,8 +40,8 @@ public class ProfessorService {
     }
 
     public void delete(Professor professor) {
-        Professor found = getProfessor(professor.getId());
-        if (hasStudentOrWorkout(found)) {
+        Professor found = professorRepository.findById(professor.getId()).orElseThrow(() -> new EntityNotFoundException("Professor not found"));
+        if (hasStudent(found)) {
             throw new NotAllowedOperationException("It's not allowed delete a professor that has students or workouts");
         }
         professorRepository.delete(found);
@@ -54,9 +51,7 @@ public class ProfessorService {
         return professorRepository.findAll(pageable);
     }
 
-    public boolean hasStudentOrWorkout(Professor professor) {
-        List<Student> studentList = professor.getStudents();
-        List<Workout> workoutList = professor.getWorkouts();
-        return (studentList.isEmpty() || workoutList.isEmpty()) ? false : true;
+    public boolean hasStudent(Professor professor) {
+        return (professor.getStudents().isEmpty()) ? false : true;
     }
 }
