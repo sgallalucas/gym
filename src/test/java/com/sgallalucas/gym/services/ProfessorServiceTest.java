@@ -4,7 +4,6 @@ import com.sgallalucas.gym.exceptions.DuplicateRecordException;
 import com.sgallalucas.gym.exceptions.NotAllowedOperationException;
 import com.sgallalucas.gym.model.Professor;
 import com.sgallalucas.gym.model.Student;
-import com.sgallalucas.gym.model.Workout;
 import com.sgallalucas.gym.model.enums.Genre;
 import com.sgallalucas.gym.model.enums.Specialty;
 import com.sgallalucas.gym.repositories.ProfessorRepository;
@@ -18,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -47,13 +47,9 @@ public class ProfessorServiceTest {
 
     Student student;
 
-    Workout workout;
-
-    List<Professor> professors = new ArrayList<>();
+    List<Professor> professorsList = new ArrayList<>();
 
     List<Student> students = new ArrayList<>();
-
-    List<Workout> workouts;
 
     @BeforeEach
     void setUp() {
@@ -191,5 +187,34 @@ public class ProfessorServiceTest {
         when(professorRepository.findById(professor.getId())).thenThrow(new IllegalArgumentException());
 
         assertThatThrownBy(() -> professorService.delete(professor)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName(value = "find all professors")
+    void findAll() {
+        professorsList.add(professor);
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<Professor> page = new PageImpl<>(professorsList, pageable, professorsList.size());
+
+        when(professorRepository.findAll(pageable)).thenReturn((page));
+
+        Page<Professor> sut = professorService.findAll(pageable);
+
+        assertThat(sut.getTotalElements()).isEqualTo(1);
+        assertThat(sut.getTotalPages()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName(value = "find all professors returns empty")
+    void findAllEmpty() {
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<Professor> page = new PageImpl<>(professorsList, pageable, professorsList.size());
+
+        when(professorRepository.findAll(pageable)).thenReturn((page));
+
+        Page<Professor> sut = professorService.findAll(pageable);
+
+        assertThat(sut.getTotalElements()).isEqualTo(0);
+        assertThat(sut.getTotalPages()).isEqualTo(0);
     }
 }
