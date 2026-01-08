@@ -45,8 +45,6 @@ public class ProfessorServiceTest {
 
     Professor professor, professor2, updatedProfessor, invalidProfessor;
 
-    Student student;
-
     List<Professor> professorsList = new ArrayList<>();
 
     List<Student> students = new ArrayList<>();
@@ -129,10 +127,11 @@ public class ProfessorServiceTest {
     @Test
     @DisplayName(value = "update professor with invalid data")
     void updateInvalid() {
-        doNothing().when(professorValidator).validation(updatedProfessor.getEmail());
-        when(professorRepository.findById(invalidProfessor.getId())).thenThrow(new IllegalArgumentException());
+        doNothing().when(professorValidator).validation(invalidProfessor.getEmail());
+        when(professorRepository.findById(professor.getId())).thenReturn(Optional.of(professor));
+        when(professorRepository.save(professor)).thenThrow(new IllegalArgumentException());
 
-        assertThatThrownBy(() -> professorService.update(invalidProfessor.getId(), updatedProfessor)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> professorService.update(professor.getId(), invalidProfessor)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -165,10 +164,8 @@ public class ProfessorServiceTest {
     @Test
     @DisplayName(value = "delete existing professor with students(s)")
     void deleteNotAllowed() {
-        student = new Student(UUID.randomUUID(), "Lucas", "lucas@gmail.com", LocalDate.of(2000, 1, 1), Genre.MALE);
-        students.add(student);
-
         when(professorRepository.findById(professor2.getId())).thenReturn(Optional.of(professor2));
+        doThrow(NotAllowedOperationException.class).when(professorRepository).delete(professor2);
 
         assertThatThrownBy(() -> professorService.delete(professor2)).isInstanceOf(NotAllowedOperationException.class);
     }
