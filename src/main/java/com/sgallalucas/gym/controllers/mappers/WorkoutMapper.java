@@ -18,8 +18,8 @@ public abstract class WorkoutMapper {
     @Autowired
     StudentRepository studentRepository;
 
-    @Mapping(target = "professor", expression = "java(professorRepository.findById(UUID.fromString(requestDTO.professorId())).orElse(null))")
-    @Mapping(target = "student", expression = "java(studentRepository.findById(UUID.fromString(requestDTO.studentId())).orElse(null))")
+    @Mapping(target = "professor", expression = "java(professorRepository.findById(UUID.fromString(requestDTO.professorId())).orElseThrow(() -> new jakarta.persistence.EntityNotFoundException(\"Professor not found\")))")
+    @Mapping(target = "student", expression = "java(studentRepository.findById(UUID.fromString(requestDTO.studentId())).orElseThrow(() -> new jakarta.persistence.EntityNotFoundException(\"Student not found\")))")
     public abstract Workout toEntity(WorkoutRequestDTO requestDTO);
 
     public abstract WorkoutResponseDTO toDTO(Workout entity);

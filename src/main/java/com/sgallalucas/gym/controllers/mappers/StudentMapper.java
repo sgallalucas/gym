@@ -14,7 +14,7 @@ public abstract class StudentMapper {
     @Autowired
     ProfessorRepository professorRepository;
 
-    @Mapping(target = "professor", expression = "java(professorRepository.findById(UUID.fromString(requestDTO.professorId())).orElse(null))")
+    @Mapping(target = "professor", expression = "java(professorRepository.findById(UUID.fromString(requestDTO.professorId())).orElseThrow(() -> new jakarta.persistence.EntityNotFoundException(\"Professor not found\")))")
     public abstract Student toEntity(StudentRequestDTO requestDTO);
 
     public abstract StudentResponseDTO toDTO(Student entity);
