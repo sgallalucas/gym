@@ -32,7 +32,7 @@ public class StudentService {
 
     public void update(UUID id, Student student) {
         validator.validation(student.getEmail());
-        Student found = getStudent(id);
+        Student found = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
         found.setName(student.getName());
         found.setEmail(student.getEmail());
         found.setBirthDate(student.getBirthDate());
@@ -41,7 +41,7 @@ public class StudentService {
     }
 
     public void delete(Student student) {
-        Student found = getStudent(student.getId());
+        Student found = studentRepository.findById(student.getId()).orElseThrow(() -> new EntityNotFoundException("Student not found"));
         if (hasWorkout(found)) {
             throw new NotAllowedOperationException("It's not allowed delete a student that has workouts");
         }
@@ -53,7 +53,6 @@ public class StudentService {
     }
 
     public boolean hasWorkout(Student student) {
-        List<Workout> list = student.getWorkouts();
-        return (list.isEmpty()) ? false : true;
+        return (student.getWorkouts() == null) ? false : true;
     }
 }

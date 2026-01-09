@@ -46,4 +46,14 @@ public class Student {
         this.birthDate = birthDate;
         this.genre = genre;
     }
+
+    public Student(UUID id, String name, String email, LocalDate birthDate, Genre genre, Professor professor, List<Workout> workouts) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.genre = genre;
+        this.professor = professor;
+        this.workouts = workouts;
+    }
 }
