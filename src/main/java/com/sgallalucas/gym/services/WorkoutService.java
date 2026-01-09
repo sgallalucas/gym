@@ -23,7 +23,7 @@ public class WorkoutService {
     }
 
     public void update(UUID id, Workout workout) {
-        Workout found = getWorkout(id);
+        Workout found = workoutRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Workout not found"));
         found.setName(workout.getName());
         found.setDescription(workout.getDescription());
         found.setType(workout.getType());
@@ -34,6 +34,6 @@ public class WorkoutService {
     }
 
     public void delete(Workout workout) {
-        workoutRepository.delete(getWorkout(workout.getId()));
+        workoutRepository.delete(workoutRepository.findById(workout.getId()).orElseThrow(() -> new EntityNotFoundException("Workout not found")));
     }
 }
